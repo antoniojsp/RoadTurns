@@ -18,7 +18,9 @@ file = open('09_27_20.gpx', 'r')#for testing, it won't be here for final version
 gpx_list = gpxpy.parse(file)
 list_coordinates = get_points(gpx_list) #array of objects that hold information like lat, long, elev, time.
 
-
+ruta = Route(list_coordinates)
+resultado = ruta.result(0, 100)
+print(resultado)
 
 
 
@@ -35,7 +37,6 @@ list_coordinates = get_points(gpx_list) #array of objects that hold information 
 # calc = Mathematica()
 # calc.route_distance(list_coordinates, 1, 100)
 
-# resultado = points.result(0, 100)
 
 #
 # thpool = ThreadPool(processes=1)#running concurrently
