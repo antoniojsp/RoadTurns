@@ -9,36 +9,38 @@ print(end)
 here = 0
 
 turns.append([0, calles[0]])
-#it returns a 2d list, one is the index and the other is the value
+# it returns a 2d list, one is the index and the other is the value
+
+
 def change(list, star, end, saving):
     middle = int((start+end)/2)
     global counter
     global salida
     counter+=1
-    #request 3
+    #  request 3
     if list[start] == list[middle] == list[end]:
         salida+=1
         return
         # 0 0 0 0 0 0 0 1 1 1 1 1 1 1
-    if (list[start] == list[middle] and  list[middle] != list[end]):#right
-        #request 1
+    if list[start] == list[middle] and  list[middle] != list[end]:  # right
+        # request 1
         if list[middle] != list[middle+1]:
             saving.append([middle, list[middle]])
         else:
-            #request 1
+            # request 1
             medio1 = int(((middle+1+end)/2))
             if list[middle+1] == list[medio1] == list[end]:
                 return
             else:
                 change(list,middle, end, saving)
     # 0 0 0 0 0 0 0 1 1 1 1 1 1 1
-    if (list[start] != list[middle] and  list[middle] == list[end]):#left
+    if list[start] != list[middle] and  list[middle] == list[end]:#left
 
         # request 1
         if list[middle-1] != list[middle]:
             saving.append([middle-1, list[middle-1]])
         else:
-            #request 1
+            # request 1
             medio2 = int((start+middle-1)/2)
             if list[start] == list[medio2] == list[middle-1]:
                 return
@@ -46,7 +48,7 @@ def change(list, star, end, saving):
                 change(list, start, middle, saving)
 
     if list[start] != list[middle] !=  list[end]:
-        #0 0 0 0 0 0 1 1 1 1 1 2 2 2 2 2 2
+        # 0 0 0 0 0 0 1 1 1 1 1 2 2 2 2 2 2
         if list[middle] != list[middle+1]:
             saving.append([middle, list[middle]])
         change(list, start, middle, saving)
