@@ -1,61 +1,55 @@
 import time
 from variables import *
-start_time = time.time()#record time
+start_time = time.time()  # record time
 
 turns = []
 start = 0
 end = len(calles)-1
-print(end)
-here = 0
-
-turns.append([0, calles[0]])
 # it returns a 2d list, one is the index and the other is the value
 
 
-def change(list, star, end, saving):
+def change(points_list, start, end, saving):
     middle = int((start+end)/2)
     global counter
     global salida
     counter+=1
     #  request 3
-    if list[start] == list[middle] == list[end]:
-        salida+=1
-        return
-        # 0 0 0 0 0 0 0 1 1 1 1 1 1 1
-    if list[start] == list[middle] and  list[middle] != list[end]:  # right
+    # if points_list[start] == points_list[middle] == points_list[end]:
+    #     salida+=1
+    #     return
+    if points_list[start] == points_list[middle] and points_list[middle] != points_list[end]:  # right
         # request 1
-        if list[middle] != list[middle+1]:
-            saving.append([middle, list[middle]])
+        if points_list[middle] != points_list[middle+1]:
+            saving.append([middle, points_list[middle]])
         else:
             # request 1
-            medio1 = int(((middle+1+end)/2))
-            if list[middle+1] == list[medio1] == list[end]:
-                return
+            medio1 = int(((middle+end)/2))
+            if points_list[middle] == points_list[medio1] == points_list[end]:
+                return  # base case, prevents to make more requests.
             else:
-                change(list,middle, end, saving)
-    # 0 0 0 0 0 0 0 1 1 1 1 1 1 1
-    if list[start] != list[middle] and  list[middle] == list[end]:#left
-
+                change(points_list, middle, end, saving)
+    # 0 0 0 0 0     0 0 1 1 1 1 1 1 1
+    if points_list[start] != points_list[middle] and points_list[middle] == points_list[end]:  # left
         # request 1
-        if list[middle-1] != list[middle]:
-            saving.append([middle-1, list[middle-1]])
+        if points_list[middle-1] != points_list[middle]:
+            saving.append([middle-1, points_list[middle-1]])
         else:
             # request 1
-            medio2 = int((start+middle-1)/2)
-            if list[start] == list[medio2] == list[middle-1]:
+            medio2 = int((start+middle)/2)
+            if points_list[start] == points_list[medio2] == points_list[middle]:
                 return
             else:
-                change(list, start, middle, saving)
+                change(points_list, start, middle, saving)
 
-    if list[start] != list[middle] !=  list[end]:
+    if points_list[start] != points_list[middle] != points_list[end]:
         # 0 0 0 0 0 0 1 1 1 1 1 2 2 2 2 2 2
-        if list[middle] != list[middle+1]:
-            saving.append([middle, list[middle]])
-        change(list, start, middle, saving)
+        if points_list[middle] != points_list[middle+1]:
+            saving.append([middle, points_list[middle]])
 
-        if list[middle-1] != list[middle]:
-            saving.append([middle-1, list[middle-1]])
-        change(list,middle, end, saving)
+        if points_list[middle-1] != points_list[middle]:
+            saving.append([middle-1, points_list[middle-1]])
+        change(points_list, start, middle, saving)
+        change(points_list,middle, end, saving)
 
 
 turns.append([end, calles[end]])
@@ -66,21 +60,18 @@ turns.append([end, calles[end]])
 
 counter = 0
 salida = 0
-
 change(calles, start, end, turns)
 print("entrada ", str(counter))
 print("salida ", str(salida))
 turns.sort(key=lambda x: x[0])#sort order
 
 i=0
-# while i < len(turns):
-#     if turns[i][0] == turns[i-1][0]:
-#         turns.pop(i)
-#         i-=1
-#     i+=1
-# # print(turns[1][0])
-# for i in calles:
-#     print(i)
+while i < len(turns):
+    if turns[i][0] == turns[i-1][0]:
+        turns.pop(i)
+        i-=1
+    i+=1
+
 
 
 for i in range(0, len(turns)-1):
