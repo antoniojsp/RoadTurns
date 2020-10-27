@@ -10,7 +10,6 @@ from getgpx import get_points
 from calculations import Mathematica
 
 
-
 # from multiprocessing import Process#to run concurrently.
 
 start_time = time.time()#record time
@@ -33,8 +32,8 @@ list_coordinates = get_points(gpx_list) #array of objects that hold information 
 # points = Route(list)
 # print(len(list))
 
-calc = Mathematica()
-calc.route_distance(list_coordinates, 1, 100)
+# calc = Mathematica()
+# calc.route_distance(list_coordinates, 1, 100)
 
 # resultado = points.result(0, 100)
 
