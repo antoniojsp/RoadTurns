@@ -1,6 +1,7 @@
 import math
 from math import cos, sin, asin, radians, sqrt
 
+
 class Mathematica:
 
     # calculate a distance between to cardinal points
@@ -22,5 +23,5 @@ class Mathematica:
     def route_distance(self, list, start, end):
         segment = 0
         for i in range(start, end):
-          segment += self.__distance(list[i].get_lat(), list[i].get_long(), list[i + 1].get_lat(), list[i + 1].get_long())
+            segment += self.__distance(list[i].get_lat(), list[i].get_long(), list[i + 1].get_lat(), list[i + 1].get_long())
         return segment

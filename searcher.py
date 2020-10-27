@@ -15,7 +15,7 @@ class Route:
         self.__pool = [""]*len(list)  # cache, collisions will prevent requesting more data.
         self.__storage = []  # partial results go here.
         self.__end = 0  # usefuk for testing (allows to check just partially)
-        self.__calc = Mathematica()  # for calculations (route_distance, angles)
+        self.__calc = Mathematica()  # for calculations (ruote_distance, angles)
 
     def __request(self, parts):  # extract points(by index), get the name address and add the info into the pool array(cache) "allow send multiple points as list"
 
@@ -35,9 +35,22 @@ class Route:
         parts1 = [[0,start],[1,middle],[2,end]]  # contains the points that are gonna be requested/checked
         self.__request(parts1)
         # base case: when  the start, the middle and the end is the same.
-        if start == end:
+        if self.__pool[start] == self.__pool[middle] and self.__pool[middle] == self.__pool[end]:
             return
 
+        if (self.__pool[start] == self.__pool[middle] and self.__pool[middle] != self.__pool[end])
+
+
+            (self.__pool[start] != self.__pool[middle] and self.__pool[middle] == self.__pool[end]):
+
+
+
+
+
+        # Check what side of then array needs to be checked.
+        if (self.__pool[start] == self.__pool[middle] and  self.__pool[middle] != self.__pool[end]) or (self.__pool[start] != self.__pool[middle] and  self.__pool[middle] == self.__pool[end]):
+            parts2 = [[0,middle+1], [1,middle-1]]
+            self.__request(parts2)
 
             #  checks if the next point from the middle is different, if it is, change detected and added.
             if  self.__pool[middle-1] != self.__pool[middle]:
@@ -50,6 +63,18 @@ class Route:
             elif self.__pool[middle] != self.__pool[end]:
                 self.__change(middle, end)
 
+        else:
+            parts3 = [[0,middle+1], [1,middle-1]]
+            self.__request(parts3)
+            if self.__pool[middle-1] != self.__pool[middle]:
+                self.__storage.append(middle)
+
+            elif self.__pool[middle] != self.__pool[middle+1]:
+                self.__storage.append(middle)
+            #  will continue dividing and searching.
+
+            self.__change(start, middle)
+            self.__change(middle+1, end)
 
     def __direction(self):  # array of indexes
         result = []  # holds all the information
