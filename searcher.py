@@ -14,9 +14,9 @@ class Route:
         self.__pool = [""]*len(coord_list)  # cache, collisions will prevent requesting more data.
         self.__storage = []  # partial results go here.
         self.__end = 0  # useful for testing (allows to check just partially)
-        self.__calc = Mathematica()  # for calculations (ruote_distance, angles)
+        self.__calc = Mathematica()  # for calculations (route_distance, angles)
 
-        self.__a = 0  # count requests
+        self.__a = 0  # count requests TEMPORAL
 
     def __request(self, parts):  # extract points(by index), get the name address and add the info into the pool array(cache)
 
@@ -69,13 +69,13 @@ class Route:
 
         else:
             # 0 0 0 0 0 1 1 1 1 2 2 2 2
-            parts_different = [[0, middle+1], [1, middle-1]]
+            parts_different = [[0, middle + 1], [1, middle - 1]]
             self.__request(parts_different)
 
-            if self.__pool[middle-1] != self.__pool[middle]:
-                self.__storage.append(middle-1)
+            if self.__pool[middle - 1] != self.__pool[middle]:
+                self.__storage.append(middle - 1)
 
-            if self.__pool[middle] != self.__pool[middle+1]:
+            if self.__pool[middle] != self.__pool[middle + 1]:
                 self.__storage.append(middle)
             #  will continue dividing and searching.
 
@@ -83,7 +83,7 @@ class Route:
                 self.__search_turning(start, middle)
 
             if self.__pool[middle] != self.__pool[end]:
-                self.__search_turning(middle, end)
+                self.__search_turning(middle + 1, end)
 
     def __direction(self):  # array of indexes
         result = []  # holds all the information
@@ -91,22 +91,25 @@ class Route:
         corners = []
         turn_list = []
 
-        result.append([0, "Start", 0, self.__pool[0], self.__arr_gpx[0].get_lat(), self.__arr_gpx[0].get_long()])
-
+        # turn_list.append("Start")
         # result.append()  # 2d array to hold addresses, distance, turning, index
-        for i in range(1, len(self.__storage)):
+
+        print(self.__storage)
+
+        for i in range(0, len(self.__storage)-1):
 
             degree = 0
             degree = self.__calc.turning(self.__arr_gpx, self.__storage[i], rango)
 
-            if degree == "Start" or degree == "Right" or degree == "Left":
+            if degree == "Right" or degree == "Left" or i == 0:
                 corners.append(self.__storage[i])
                 turn_list.append(degree)
 
+        # AQUI SEGUIR
         print(corners)
         size = len(corners)
         print(size)
-        for i in range(0,size-1):
+        for i in range(0, size-1):
             coord_index_start = corners[i]
             coord_index_end = corners[i+1]
             meters = self.__calc.route_distance(self.__arr_gpx, coord_index_start, coord_index_end)
@@ -124,12 +127,12 @@ class Route:
         return result
 
     def result(self, start, end):
-        self.__add_point(0)
+        self.__add_point(0) # maybe remove
         self.__end = end  # random for testing
         self.__search_turning(start, end)
         print(self.__pool)
         print(self.__a)
-        self.__add_point(self.__end)  # add first and last points to
+        self.__add_point(self.__end)  # add first and last points to MAYBE REMOVE
         list.sort(self.__storage)  # indicate the start and the end
 
         i = 1

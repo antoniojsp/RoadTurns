@@ -44,6 +44,8 @@ class Mathematica:
             turn_direction = "Right"
         elif degrees < 150:
             turn_direction = "Left"
+        elif center == 0:
+            turn_direction = "Start"
         else:
             turn_direction = "Straight"
 
