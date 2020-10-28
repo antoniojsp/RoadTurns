@@ -6,10 +6,15 @@ import gpxpy
 
 class Points : #  class that holds info of one point. The idea is create an array of this object.
     def __init__(self,lat, long, elev, time):
+        self.__index = 0
         self.__lat = lat
         self.__long = long
         self.__elev = elev
         self.__time = time
+        self.__index += 1
+
+    def get_index(self):
+        return self.__index
 
     def get_lat(self):
         return self.__lat

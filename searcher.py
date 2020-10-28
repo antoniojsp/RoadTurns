@@ -69,7 +69,7 @@ class Route:
 
         else:
             # 0 0 0 0 0 1 1 1 1 2 2 2 2
-            parts_different = [[0,middle+1], [1,middle-1]]
+            parts_different = [[0, middle+1], [1, middle-1]]
             self.__request(parts_different)
 
             if self.__pool[middle-1] != self.__pool[middle]:
@@ -87,38 +87,25 @@ class Route:
 
     def __direction(self):  # array of indexes
         result = []  # holds all the information
-        rango = 20  # range of search for change in direction of the route.
+        rango = 5  # range of search for change in direction of the route.
         corners = []
         turn_list = []
 
+        result.append([0, "Start", 0, self.__pool[0], self.__arr_gpx[0].get_lat(), self.__arr_gpx[0].get_long()])
+
         # result.append()  # 2d array to hold addresses, distance, turning, index
-        for i in range(0, len(self.__storage)):
+        for i in range(1, len(self.__storage)):
 
             degree = 0
-            if i == 0:
-                degree = 180
-            else:
-                try:
-                    a = [self.__arr_gpx[self.__storage[i]-rango].get_lat(), self.__arr_gpx[self.__storage[i]-rango].get_long()]
-                    b = [self.__arr_gpx[self.__storage[i]].get_lat(), self.__arr_gpx[self.__storage[i]].get_long()]
-                    c = [self.__arr_gpx[self.__storage[i]+rango].get_lat(), self.__arr_gpx[self.__storage[i]+rango].get_long()]
-                        degree = self.__calc.get_angle(a, b, c)
-                except:
-                    print("Fail at {}". format(i))
-                    degree = 180
+            degree = self.__calc.turning(self.__arr_gpx, self.__storage[i], rango)
 
-            if degree < 130 or degree > 240 or i == 0:
-                if i == 0:
-                    turn_direction = "Start"
-                if degree > 240:
-                    turn_direction = "Right"
-                elif degree < 130:
-                    turn_direction = "Left"
+            if degree == "Start" or degree == "Right" or degree == "Left":
+                corners.append(self.__storage[i])
+                turn_list.append(degree)
 
-            corners.append(self.__storage[i])
-            turn_list.append(turn_direction)
-
+        print(corners)
         size = len(corners)
+        print(size)
         for i in range(0,size-1):
             coord_index_start = corners[i]
             coord_index_end = corners[i+1]

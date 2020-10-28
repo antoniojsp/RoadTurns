@@ -5,11 +5,15 @@ import gpxpy
 
 
 class Points : #  class that holds info of one point. The idea is create an array of this object.
-    def __init__(self,lat, long, elev, time):
+    def __init__(self, index, lat, long, elev, time):
+        self.__index = index
         self.__lat = lat
         self.__long = long
         self.__elev = elev
         self.__time = time
+
+    def get_index(self):
+        return self.__index
 
     def get_lat(self):
         return self.__lat
@@ -28,9 +32,11 @@ class Points : #  class that holds info of one point. The idea is create an arra
 def get_points(gpx_list):
     position = []
 
+    i = 0
     for track in gpx_list.tracks:
         for segment in track.segments:
             for point in segment.points:
-                position.append((Points(point.latitude, point.longitude, point.elevation, point.time)))
+                position.append((Points(i, point.latitude, point.longitude, point.elevation, point.time)))
+                i += 1
 
     return position

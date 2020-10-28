@@ -19,7 +19,7 @@ gpx_list = gpxpy.parse(file)
 list_coordinates = get_points(gpx_list) #array of objects that hold information like lat, long, elev, time.
 
 ruta = Route(list_coordinates)
-resultado = ruta.result(0, 100)
+resultado = ruta.result(0, 100) #ß len(list_coordinates)-1)
 print(resultado)
 
 
